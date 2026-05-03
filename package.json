@@ -1,0 +1,14 @@
+{
+  "name": "pacote-laboral",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node src/generate-static-html.mjs",
+    "build:ante": "node src/generate-static-html.mjs --mode=ante",
+    "build:full": "node src/generate-static-html.mjs --mode=full",
+    "build:changes": "node src/generate-static-html.mjs --mode=changes"
+  },
+  "dependencies": {
+    "diff": "^5.2.0"
+  }
+}
