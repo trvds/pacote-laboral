@@ -6,9 +6,14 @@
     "build": "node src/generate-static-html.mjs",
     "build:ante": "node src/generate-static-html.mjs --mode=ante",
     "build:full": "node src/generate-static-html.mjs --mode=full",
-    "build:changes": "node src/generate-static-html.mjs --mode=changes"
+    "build:changes": "node src/generate-static-html.mjs --mode=changes",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
   },
   "dependencies": {
     "diff": "^5.2.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.0"
   }
 }
