@@ -111,6 +111,43 @@ body {
 .page-header-bar__start {
   min-width: 0;
   flex: 1 1 220px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.document-picker {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--fg-default);
+}
+
+.document-select {
+  min-width: min(100vw - 40px, 320px);
+  max-width: 100%;
+  padding: 8px 34px 8px 10px;
+  font-size: 0.875rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  background: var(--bg-default);
+  color: var(--fg-default);
+  cursor: pointer;
+}
+
+.document-select:hover {
+  border-color: var(--accent);
+}
+
+.document-select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .view-cycle-btn {
@@ -276,12 +313,6 @@ body {
 
 .diff-table tbody.diff-tbody {
   display: none;
-}
-
-html[data-active-view='0'] .diff-table tbody.diff-tbody[data-view='0'],
-html[data-active-view='1'] .diff-table tbody.diff-tbody[data-view='1'],
-html[data-active-view='2'] .diff-table tbody.diff-tbody[data-view='2'] {
-  display: table-row-group;
 }
 
 .diff-section-row .diff-section-header {

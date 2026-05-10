@@ -1,16 +1,59 @@
 import * as Diff from 'diff';
 
-export const ARTICLE_HEAD_RE = /^### Artigo (\d+\.º(?:-[A-Z])?)\s*[—–-]\s*(.*)$/;
+export const ARTICLE_HEAD_RE = /^### Artigo (\d+\.º(?:-[A-Z])?)(?:\s*[—–-]\s*(.*))?\s*$/;
 export const FOREIGN_BLOCK_RE = /^### Artigo \d+\.º(?:-[A-Z])? — Alteração (à|ao) /;
 export const INTRA_LINE_SIMILARITY_MIN = 0.32;
 
 export const VIEW_MODES = [
-  { fullCt: false, onlyChanges: false, btn: 'Anteprojeto (trechos completos)' },
-  { fullCt: true, onlyChanges: false, btn: 'Todo o Código do Trabalho' },
+  { fullCt: false, onlyChanges: false, btn: 'Artigos alterados' },
+  { fullCt: true, onlyChanges: false, btn: 'Todo o diploma' },
   { fullCt: true, onlyChanges: true, btn: 'Só linhas alteradas' },
 ];
 
+export function splitAnteprojetoDocuments(text) {
+  const lines = text.split(/\r?\n/);
+  const docs = [];
+  let cur = null;
+
+  const flush = () => {
+    if (!cur) return;
+    docs.push({
+      id: cur.id,
+      label: cur.label,
+      text: cur.lines.join('\n').replace(/^\n+|\n+$/g, ''),
+    });
+  };
+
+  for (const line of lines) {
+    const m = line.match(/^##\s+(.+?\.md)\s*$/);
+    if (m) {
+      flush();
+      cur = { id: m[1].trim(), label: m[1].trim(), lines: [] };
+    } else if (cur) {
+      cur.lines.push(line);
+    }
+  }
+  flush();
+
+  return docs.map((doc) => ({
+    id: doc.id,
+    label: doc.label,
+    articles: parseArticles(doc.text).map((a) => Object.assign(a, { scope: doc.id })),
+  }));
+}
+
 export function splitAnteprojeto(text) {
+  const docs = splitAnteprojetoDocuments(text);
+  if (docs.length) {
+    return docs.flatMap((doc) =>
+      doc.articles.map((a) =>
+        Object.assign(a, {
+          scope: doc.id === 'codigo_trabalho.md' ? 'ct' : 'foreign',
+        }),
+      ),
+    );
+  }
+
   const lines = text.split(/\r?\n/);
   const cut = lines.findIndex((l) => FOREIGN_BLOCK_RE.test(l));
   const ctPart = cut === -1 ? text : lines.slice(0, cut).join('\n');
@@ -40,7 +83,7 @@ export function parseArticles(text) {
       if (cur) out.push(cur);
       cur = {
         id: m[1],
-        title: m[2].trim(),
+        title: (m[2] || '').trim(),
         bodyLines: [],
         structureBefore: pendingStruct.slice(),
       };
@@ -139,6 +182,10 @@ export function pushExpandedParagraphBlock(out, block, useIntroOnly) {
 const ELLIPSIS_BODY_RE = /^\[(?:…|\.\.\.)]\s*[.:;,]?\s*$/;
 const REVOGADO_BODY_RE = /^\[Revogado]\s*[.:;,]?\s*$/i;
 const ANTERIOR_N_BODY_RE = /^\(anterior n\.?\s*º\s*(\d+)\)\s*\.?\s*$/i;
+
+export function isArticleRevogado(article) {
+  return REVOGADO_BODY_RE.test(articleBody(article).trim());
+}
 
 export function expandAnteprojetoForDiff(anteBody, codigoBody) {
   const paras = indexCodigoParagraphs(codigoBody);
@@ -426,6 +473,16 @@ export function buildAllDiffSections(codigoMap, anteList) {
   const sections = [];
   for (let i = 0; i < anteList.length; i++) {
     const prop = anteList[i];
+    if (isArticleRevogado(prop)) {
+      const id = prop.id;
+      const cur = codigoMap.get(id);
+      const leftBody = cur ? articleBody(cur) : '';
+      sections.push({
+        title: 'Artigo ' + id + ' — ' + (cur?.title ?? prop.title) + ' · Revogado',
+        rows: sideBySideRows(leftBody, ''),
+      });
+      continue;
+    }    
     const id = prop.id;
     let cur = prop.scope === 'foreign' ? null : codigoMap.get(id);
     const leftBody = cur ? articleBody(cur) : '';
@@ -458,11 +515,16 @@ export function buildSectionsFullCodigo(codigoList, codigoMap, anteList) {
     let title = 'Artigo ' + cur.id + ' — ' + cur.title;
     let rows;
     if (prop) {
-      const rawAnte = articleBody(prop);
-      const rightBody = expandAnteprojetoForDiff(rawAnte, leftBody);
-      rows = sideBySideRows(leftBody, rightBody);
-      if (cur.title !== prop.title) {
-        title += ' · Anteprojeto: ' + prop.title;
+      if (isArticleRevogado(prop)) {
+        rows = sideBySideRows(leftBody, '');
+        title += ' · Revogado';
+      } else {
+        const rawAnte = articleBody(prop);
+        const rightBody = expandAnteprojetoForDiff(rawAnte, leftBody);
+        rows = sideBySideRows(leftBody, rightBody);
+        if (cur.title !== prop.title) {
+          title += ' · Anteprojeto: ' + prop.title;
+        }
       }
     } else {
       rows = identityDiffRows(leftBody);
@@ -526,5 +588,27 @@ export function computeFlatItems(codigoText, anteText, opts) {
   const sections = fullCt
     ? buildSectionsFullCodigo(codigoList, codigoMap, anteList)
     : buildAllDiffSections(codigoMap, anteList);
+  return flattenSectionsForRender(sections, onlyChanges);
+}
+
+/**
+ * @param {string} currentText
+ * @param {string} anteText
+ * @param {string} documentId
+ * @param {{ fullCt: boolean, onlyChanges: boolean }} opts
+ */
+export function computeFlatItemsForDocument(currentText, anteText, documentId, opts) {
+  const { fullCt, onlyChanges } = opts;
+  const currentList = parseArticles(currentText);
+  const currentMap = new Map();
+  for (const a of currentList) {
+    currentMap.set(a.id, a);
+  }
+
+  const doc = splitAnteprojetoDocuments(anteText).find((d) => d.id === documentId);
+  const anteList = doc ? doc.articles : [];
+  const sections = fullCt
+    ? buildSectionsFullCodigo(currentList, currentMap, anteList)
+    : buildAllDiffSections(currentMap, anteList);
   return flattenSectionsForRender(sections, onlyChanges);
 }

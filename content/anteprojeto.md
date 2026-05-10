@@ -1,3 +1,5 @@
+## codigo_trabalho.md
+
 ### Artigo 3.º — Relações entre fontes de regulação
 
 - 1 – […].
@@ -1047,3 +1049,193 @@ O regime da arbitragem obrigatória e da arbitragem necessária, no que não é 
 - 5 - A definição da medida dos serviços mínimos deve respeitar os princípios da necessidade, da adequação e da proporcionalidade.
 - 6 - O despacho e a decisão do tribunal arbitral previstos no número anterior produzem efeitos imediatamente após a sua notificação às entidades a que se refere o n.º 1 e devem ser afixados nas instalações da empresa, estabelecimento ou serviço, em locais destinados à informação dos trabalhadores, bem como, disponibilizado em sítio da intranet da empresa.
 - 7 - […].
+
+## lei_98_2009.md
+
+### Artigo 8.º — Conceito
+
+- 1 - […].
+- 2 - […]:
+  - a) […];
+  - b) […];
+  - c) [Revogado].
+
+## lei_107_2009.md
+
+### Artigo 35.º — Efeitos da impugnação judicial
+
+- 1 - […].
+- 2 - A impugnação judicial tem efeito suspensivo se o recorrente depositar o valor da coima e das custas do processo, no prazo referido no n.º 2 do artigo 33.º, em instituição bancária aderente, a favor da autoridade administrativa competente que proferiu a decisão de aplicação da coima.
+- 3 - O depósito referido no número anterior pode ser substituído por garantia bancária, na modalidade «à primeira solicitação».
+
+## lei_259_2009.md
+
+### Artigo 27.º — Regras aplicáveis ao procedimento de arbitragem
+
+- 1 - […].
+- 2 - O tribunal arbitral convoca as partes para as ouvir sobre a definição da medida dos serviços mínimos e os meios necessários para os assegurar em condições de segurança, podendo estas juntar os documentos que considerem pertinentes.
+- 3 - [Revogado].
+- 4 - […].
+- 5 - […].
+- 6 - […].
+- 7 - […].
+
+## codigo_processo_trabalho.md
+
+### Artigo 33.º — Aplicação subsidiária
+
+- 1 - […].
+- 2 - […].
+- 3 - O regime de inversão do contencioso não é aplicável à providência cautelar de suspensão do despedimento quando for requerida a impugnação da regularidade e licitude do despedimento, nos termos do n.º 4 do artigo 34.º e do artigo 98.º-C.
+
+### Artigo 33.º-B — Intervenção do Ministério Público
+
+- 1 – [Revogado].
+- 2 – [Revogado].
+
+### Artigo 34.º — Requerimento
+
+- 1 - Apresentado o requerimento inicial no prazo previsto no artigo 386.º do Código do Trabalho, o juiz ordena a citação do requerido para se opor, querendo, e designa no mesmo ato data para a audiência final, que deve realizar-se no prazo de 15 dias.
+- 2 - [Revogado].
+- 3 - […].
+- 4 - […].
+- 5 - […].
+
+### Artigo 74.º-B — Pagamento de retribuições intercalares pelo Estado
+
+- 1 - Sem prejuízo do disposto no n.º 2 do artigo 390.º do Código do Trabalho, o tribunal determina, na decisão em 1.ª instância que declare a ilicitude do despedimento, que o pagamento das retribuições devidas ao trabalhador após o decurso de 12 meses desde a apresentação da petição até à notificação da decisão de 1.ª instância seja efetuado pela entidade competente da área da segurança social.
+- 2 - Aos casos previstos no número anterior aplica-se o disposto nos artigos 98.º-N e 98.º-O.
+
+### Artigo 161.º-A — Pagamento de retribuições intercalares pelo Estado
+
+- 1 - Sem prejuízo do disposto no n.º 2 do artigo 390.º do Código do Trabalho, o tribunal determina, na decisão em 1.ª instância que declare a ilicitude do despedimento coletivo, que o pagamento das retribuições devidas ao trabalhador após o decurso de 12 meses desde a apresentação da petição até à notificação da decisão de 1.ª instância seja efetuado pela entidade competente da área da segurança social.
+- 2 - Aos casos previstos no número anterior aplica-se o disposto nos artigos 98.º-N e 98.º-O.
+
+### Artigo 186.º-M — Falta de contestação
+
+- 1 – […].
+- 2 - Se o trabalhador, no articulado previsto no n.º 4 do artigo anterior ou através do respetivo mandatário, vier ao processo declarar a sua falta de interesse no prosseguimento da ação, o juiz decreta a extinção da instância.
+
+## lei_102_2000.md
+
+### Artigo 11.º — Poderes
+
+- 1 - […]:
+  - a) […];
+  - b) […];
+  - c) […];
+  - d) […];
+  - e) […];
+  - f) […];
+  - g) […];
+  - h) […];
+  - i) […];
+  - j) […];
+  - k) […];
+  - l) […];
+  - m) […].
+- 2 - […].
+- 3 - [Revogado].
+- 4 - [Revogado].
+
+## lei_4_2019.md
+
+### Artigo 1.º — Objeto
+
+A presente lei estabelece um sistema de quotas de emprego para pessoas com deficiência, com um grau de incapacidade igual ou superior a 33 %, visando a sua contratação por entidades empregadoras do setor privado e organismos do setor público, não abrangidos pelo âmbito de aplicação do Decreto-Lei n.º 29/2001, de 3 de fevereiro.
+
+### Artigo 5.º — Quota de emprego
+
+- 1 - […].
+- 2 - […].
+- 3 - […].
+- 4 - […].
+- 5 - […].
+- 6 - […].
+- 7 - […].
+- 8 - Em caso de recurso ao trabalho temporário por empresa que aloque trabalhadores com deficiência para preencher um posto de trabalho na entidade beneficiária, o trabalhador com deficiência alocado integra também o computo do pessoal da empresa beneficiária do serviço para efeito dos números anteriores.
+- 9 - Em caso de recurso a prestação de serviços por centro de emprego protegido, nos termos do Decreto-Lei n.º 290/2009, de 12 de outubro, que aloque trabalhadores com deficiência para preencher um posto de trabalho na entidade beneficiária, o trabalhador com deficiência alocado integra o computo do pessoal da empresa beneficiária do serviço para o efeito dos números anteriores.
+
+## lei_91_2009.md
+
+### Artigo 12.º — Subsídio parental inicial
+
+- 1 - O subsídio parental inicial é concedido pelo período de até 180 dias consecutivos, nos termos das alíneas seguintes:
+  - a) Período de gozo obrigatório de 120 dias;
+  - b) Período adicional de gozo facultativo de 30 dias;
+  - c) Período adicional de gozo facultativo de 60 dias em regime partilhado por ambos progenitores.
+- 2 - À licença prevista no n.º 1 acrescem 30 dias nos seguintes casos:
+  - a) Nascimentos múltiplos, por cada gémeo além do primeiro;
+  - b) Internamento hospitalar da criança imediatamente após o período recomendado de internamento pós-parto;
+  - c) Quando o parto ocorra até ao final das 33 semanas de gravidez.
+- 3 - Durante o gozo da licença parental inicial prevista nos n.ºs 3 e 4 do artigo 40.º do Código do Trabalho, os beneficiários têm direito ao correspondente subsídio parental inicial.
+- 4 - Em situação de internamento hospitalar da criança imediatamente após o período recomendado de internamento pós-parto, quando o parto ocorra até ao final das 33 semanas, à licença referida no n.º 2 acresce todo o período de internamento.
+- 5 - (anterior n.º 8).
+- 6 - (anterior n.º 7).
+- 7 - Na falta da declaração de opção da modalidade de licença parental inicial, o direito ao subsídio parental é reconhecido à mãe.
+
+### Artigo 14.º — Subsídio parental inicial de um progenitor em caso de impossibilidade do outro
+
+- 1 - […]:
+  - a) […];
+  - b) […].
+- 2 - Apenas há lugar ao período total de concessão previsto na alínea c) do n.º 1 do artigo 12.º caso se verifiquem as condições aí previstas, à data dos factos referidos no número anterior.
+- 3 - […].
+- 4 - […].
+
+### Artigo 15.º — Subsídio parental inicial exclusivo do pai
+
+- 1 - O subsídio parental inicial exclusivo do pai é concedido pelos períodos seguintes, sem prejuízo do disposto no n.º 4:
+  - a) 28 dias de gozo obrigatório, seguidos ou interpolados, dos quais 14 devem ser gozados imediatamente após o nascimento e os remanescentes durante o período de licença parental inicial por parte da mãe;
+  - b) 7 dias de gozo facultativo, seguidos ou interpolados, desde que gozados em simultâneo com o gozo da licença parental inicial por parte da mãe.
+- 2 – […].
+- 3 – […].
+- 4 – […].
+
+### Artigo 24.º — Condições comuns
+
+- 1 – […]:
+  - a) […];
+  - b) […].
+- 2 - […].
+- 3 - A opção pelo subsídio parental inicial por 150 ou 180 dias prevista nas alíneas b) e c) do n.º 1 do artigo 12.º bem como o disposto nos n.ºs 2 e 3 do mesmo artigo, no artigo 14.º, na alínea b) do n.º 1 e no n.º 2 do artigo 15.º e no artigo 16.º apenas são aplicáveis em situação de nado vivo.
+
+### Artigo 30.º — Montante do subsídio parental inicial
+
+- 1 - O montante diário do subsídio parental inicial é o seguinte:
+  - a) […];
+  - b) No caso de opção pelo período de licença de 120 dias acrescido de um período de gozo de licença facultativo de 30 dias, o montante diário é igual a 80 % da remuneração de referência do beneficiário;
+  - c) No caso de opção pelo período de licença de 120 dias acrescido de um período de gozo de licença facultativo de 30 dias, gozando cada um dos progenitores, pelo menos, 30 dias consecutivos, ou dois períodos de 15 dias igualmente consecutivos, o montante diário é igual a 90 % da remuneração de referência do beneficiário;
+  - d) No caso de opção pelo período de licença de 120 dias, acrescido de um período adicional de gozo facultativo de 60 dias em regime partilhado em períodos iguais por ambos os progenitores, o montante diário é igual a 100 % da remuneração de referência do beneficiário;
+- 2 - Nas situações em que o progenitor goze a licença nos termos do n.º 4 do artigo 40.º do Código do Trabalho, o montante diário do subsídio corresponde a 50 % do montante apurado nos termos do número anterior.
+
+### Artigo 32.º — Montante do acréscimo ao valor dos subsídios por nascimentos múltiplos, internamento hospitalar e prematuridade até às 33 semanas
+
+O montante diário dos subsídios devidos nos períodos de acréscimo à licença parental inicial pelo nascimento de gémeos, por internamento hospitalar e por prematuridade até às 33 semanas, previstos nos n.ºs 2 e 4 do artigo 12.º, é igual a 100 % da remuneração de referência do beneficiário.
+
+### Artigo 41.º — Suspensão do período de concessão dos subsídios
+
+- 1 - […].
+- 2 - […].
+- 3 - A suspensão da concessão do subsídio parental inicial por internamento da criança, prevista no n.º 2, não abrange as situações previstas no n.º 4 do artigo 12.º.
+
+### Artigo 42.º — Inacumulabilidade com rendimentos de trabalho
+
+Os subsídios previstos no presente capítulo não são acumuláveis com rendimento de trabalho, com exceção das seguintes situações:
+
+- a) Subsídio parental inicial correspondente ao gozo da licença parental inicial, nos termos previstos no n.º 4 do artigo 40.º do Código do Trabalho;
+- b) […].
+
+### Artigo 59.º — Montante do acréscimo ao valor dos subsídios por nascimentos múltiplos, internamento hospitalar e prematuridade até às 33 semanas de gravidez
+
+O montante diário dos subsídios devidos nos períodos de acréscimo à licença parental inicial pelo nascimento de gémeos, por internamento hospitalar e por prematuridade até às 33 semanas, previstos no n.º 2 do artigo 12.º, é igual a 80 % de um 30 avos do valor do IAS.
+
+### Artigo 71.º-A — Meios de prova do acréscimo à licença parental por internamento hospitalar da criança e por prematuridade até às 33 semanas de gravidez
+
+Os acréscimos ao período de licença parental por internamento hospitalar da criança e por prematuridade até às 33 semanas de gravidez, previstos nos n.ºs 2 e 4 do artigo 12.º, dependem de apresentação de certificação do hospital que comprove o período de internamento da criança.
+
+## lei_15_2001.md
+
+### Artigo 106.º-A — Omissão de comunicação de admissão de trabalhadores
+
+[Revogado].

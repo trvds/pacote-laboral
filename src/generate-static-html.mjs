@@ -2,8 +2,9 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-  computeFlatItems,
+  computeFlatItemsForDocument,
   escapeHtml,
+  splitAnteprojetoDocuments,
   VIEW_MODES,
 } from './lib/pacote-diff.mjs';
 
@@ -75,14 +76,14 @@ function flatToTbodyHtml(flat) {
 const mode = parseMode();
 const modeLabel = VIEW_MODES[mode.modeIndex].btn;
 
-const codigoPath = path.join(root, 'content', 'codigo_trabalho.md');
 const antePath = path.join(root, 'content', 'anteprojeto.md');
 const cssPath = path.join(root, 'src', 'styles-pacote-github.css');
+const contentDir = path.join(root, 'content');
 
-const [codigoText, anteText, css] = await Promise.all([
-  fs.readFile(codigoPath, 'utf8'),
+const [anteText, css, contentFiles] = await Promise.all([
   fs.readFile(antePath, 'utf8'),
   fs.readFile(cssPath, 'utf8'),
+  fs.readdir(contentDir),
 ]);
 
 const flatOpts = [
@@ -90,14 +91,83 @@ const flatOpts = [
   { fullCt: true, onlyChanges: false },
   { fullCt: true, onlyChanges: true },
 ];
-const flats = flatOpts.map((opts) =>
-  computeFlatItems(codigoText, anteText, opts),
+
+function documentLabel(fileName, text = '') {
+  const firstHeading = text.match(/^#\s+(.+)$/m);
+  if (firstHeading) return firstHeading[1].trim();
+  const base = fileName.replace(/\.md$/i, '');
+  if (base === 'codigo_trabalho') return 'Código do Trabalho';
+  if (base === 'codigo_processo_trabalho') return 'Código de Processo do Trabalho';
+  const law = base.match(/^lei_(\d+)_(\d{4})$/);
+  if (law) return 'Lei n.º ' + law[1] + '/' + law[2];
+  return base
+    .split('_')
+    .map((part) => {
+      if (/^\d+$/.test(part)) return part;
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join(' ');
+}
+
+const availableDocNames = new Set(
+  contentFiles.filter((f) => f.endsWith('.md') && f !== 'anteprojeto.md'),
 );
-const tbodyHtmls = flats.map(flatToTbodyHtml);
+const anteDocOrder = splitAnteprojetoDocuments(anteText).map((doc) => doc.id);
+const orderedDocNames = [
+  ...anteDocOrder.filter((name) => availableDocNames.has(name)),
+  ...[...availableDocNames].filter((name) => !anteDocOrder.includes(name)).sort(),
+];
+
+const documents = await Promise.all(
+  orderedDocNames.map(async (fileName) => {
+    const currentText = await fs.readFile(path.join(contentDir, fileName), 'utf8');
+    const flats = flatOpts.map((opts) =>
+      computeFlatItemsForDocument(currentText, anteText, fileName, opts),
+    );
+    return {
+      id: fileName,
+      label: documentLabel(fileName, currentText),
+      flats,
+      tbodyHtmls: flats.map(flatToTbodyHtml),
+    };
+  }),
+);
+
+const defaultDoc = documents.find((doc) => doc.id === 'codigo_trabalho.md') || documents[0];
 const viewModeLabelsJson = JSON.stringify(VIEW_MODES.map((m) => m.btn)).replace(
   /</g,
   '\\u003c',
 );
+const documentLabelsJson = JSON.stringify(
+  Object.fromEntries(documents.map((doc) => [doc.id, doc.label])),
+).replace(/</g, '\\u003c');
+const defaultDocJson = JSON.stringify(defaultDoc.id).replace(/</g, '\\u003c');
+const documentOptionsHtml = documents
+  .map(
+    (doc) =>
+      '<option value="' +
+      escapeHtml(doc.id) +
+      '"' +
+      (doc.id === defaultDoc.id ? ' selected' : '') +
+      '>' +
+      escapeHtml(doc.label) +
+      '</option>',
+  )
+  .join('\n');
+const tbodyHtml = documents
+  .flatMap((doc) =>
+    doc.tbodyHtmls.map(
+      (body, i) =>
+        '<tbody class="diff-tbody" data-doc="' +
+        escapeHtml(doc.id) +
+        '" data-view="' +
+        i +
+        '">\n' +
+        body +
+        '\n        </tbody>',
+    ),
+  )
+  .join('\n        ');
 
 const themeToggleIcons =
   '<svg class="theme-toggle__icon when-light" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' +
@@ -110,7 +180,11 @@ const themeBootScript =
   'var k2="pacote-view",s2=null;try{s2=localStorage.getItem(k2);}catch(e){}' +
   'var b=document.documentElement.getAttribute("data-build-view")||"0";' +
   'var v=(s2==="0"||s2==="1"||s2==="2")?s2:b;' +
-  'document.documentElement.setAttribute("data-active-view",v);})();';
+  'document.documentElement.setAttribute("data-active-view",v);' +
+  'var k3="pacote-document",s3=null;try{s3=localStorage.getItem(k3);}catch(e){}' +
+  'document.documentElement.setAttribute("data-active-document",s3||' +
+  defaultDocJson +
+  ');})();';
 
 const pageScript =
   '(function(){var r=document.documentElement,kt="pacote-theme",tb=document.getElementById("theme-toggle");' +
@@ -123,9 +197,20 @@ const pageScript =
   'var kv="pacote-view",vb=document.getElementById("view-cycle-btn"),vl=document.getElementById("view-cycle-label"),L=' +
   viewModeLabelsJson +
   ';' +
-  'function V(v){r.setAttribute("data-active-view",v);vl.textContent=L[Number(v)]||L[0];try{localStorage.setItem(kv,v);}catch(e){}}' +
+  'function R(){var d=r.getAttribute("data-active-document")||' +
+  defaultDocJson +
+  ',v=r.getAttribute("data-active-view")||"0";document.querySelectorAll(".diff-tbody").forEach(function(t){t.style.display=t.getAttribute("data-doc")===d&&t.getAttribute("data-view")===v?"table-row-group":"none";});}' +
+  'function V(v){r.setAttribute("data-active-view",v);vl.textContent=L[Number(v)]||L[0];try{localStorage.setItem(kv,v);}catch(e){}R();}' +
   'vb.addEventListener("click",function(){var c=Number(r.getAttribute("data-active-view")||"0");V(String((c+1)%3));});' +
-  'V(r.getAttribute("data-active-view")||"0");})();';
+  'var kd="pacote-document",ds=document.getElementById("document-select"),dt=document.getElementById("document-title"),lh=document.getElementById("left-label"),D=' +
+  documentLabelsJson +
+  ';' +
+  'function Doc(d){if(!D[d])d=' +
+  defaultDocJson +
+  ';r.setAttribute("data-active-document",d);ds.value=d;dt.textContent=D[d];lh.textContent=D[d];try{localStorage.setItem(kd,d);}catch(e){}R();}' +
+  'ds.addEventListener("change",function(){Doc(ds.value);});Doc(r.getAttribute("data-active-document")||' +
+  defaultDocJson +
+  ');V(r.getAttribute("data-active-view")||"0");})();';
 
 const html =
   '<!DOCTYPE html>\n' +
@@ -138,7 +223,7 @@ const html =
   '  <meta charset="UTF-8">\n' +
   '  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
   '  <meta name="color-scheme" content="light dark">\n' +
-  '  <title>Pacote laboral — diff Código do Trabalho</title>\n' +
+  '  <title>Pacote laboral — diffs por diploma</title>\n' +
   '  <script>' +
   themeBootScript +
   '</script>\n' +
@@ -148,9 +233,18 @@ const html =
   '</head>\n' +
   '<body>\n' +
   '  <header class="page-header">\n' +
-  '    <h1 class="page-title">Comparativo: Código do Trabalho × Pacote Laboral</h1>\n' +
+  '    <h1 class="page-title">Comparativo: <span id="document-title">' +
+  escapeHtml(defaultDoc.label) +
+  '</span> × Pacote Laboral</h1>\n' +
+  '    <p class="page-subtitle">Baseado no <a href="https://portugal.gov.pt/gc25/comunicacao/documentos/trabalho-xxi-anteprojeto-de-lei-da-reforma-da-legislacao-laboral" target="_blank" rel="noopener">anteprojeto</a> apresentado a 25/07/2025</p>\n' +
   '    <div class="page-header-bar">\n' +
   '      <div class="page-header-bar__start">\n' +
+  '        <label class="document-picker" for="document-select">\n' +
+  '          <span>Diploma</span>\n' +
+  '          <select id="document-select" class="document-select">\n' +
+  documentOptionsHtml +
+  '\n          </select>\n' +
+  '        </label>\n' +
   '        <button type="button" id="view-cycle-btn" class="view-cycle-btn" aria-label="Mudar vista do comparativo">\n' +
   '          Vista: <span id="view-cycle-label"></span>\n' +
   '        </button>\n' +
@@ -165,19 +259,15 @@ const html =
   '      <table class="diff-table" id="diff-table">\n' +
   '        <thead>\n' +
   '          <tr>\n' +
-  '            <th colspan="2" class="label-header">Código atual</th>\n' +
+  '            <th colspan="2" class="label-header"><span id="left-label">' +
+  escapeHtml(defaultDoc.label) +
+  '</span> atual</th>\n' +
   '            <th colspan="2" class="label-header">Proposta (anteprojeto)</th>\n' +
   '          </tr>\n' +
   '        </thead>\n' +
-  '        <tbody class="diff-tbody" data-view="0">\n' +
-  tbodyHtmls[0] +
-  '\n        </tbody>\n' +
-  '        <tbody class="diff-tbody" data-view="1">\n' +
-  tbodyHtmls[1] +
-  '\n        </tbody>\n' +
-  '        <tbody class="diff-tbody" data-view="2">\n' +
-  tbodyHtmls[2] +
-  '\n        </tbody>\n' +
+  '        ' +
+  tbodyHtml +
+  '\n' +
   '      </table>\n' +
   '    </div>\n' +
   '  </div>\n' +
@@ -193,7 +283,9 @@ console.log(
   'Gerado:',
   outFile,
   '·',
-  flats.map((f) => f.length).join('/'),
-  'linhas por vista · predefinição:',
+  documents.length,
+  'diplomas · predefinição:',
+  defaultDoc.label,
+  '· vista:',
   modeLabel,
 );
